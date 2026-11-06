@@ -1,11 +1,8 @@
-summary: Advanced Smart Charging & Gaming Bypass Charging controller with Material 3 WebUI and Auto-Detection Engine.
+schemaVersion: 1
+id: smart_bypass_charging
+name: Smart Bypass Charging
+summary: Advanced Smart Charging & Gaming Bypass Charging controller with Material 3 WebUI.
 description: |
   Smart Bypass Charging protects your battery health by stopping charging at a custom limit and provides a dedicated Force Bypass Mode for gamers to power the phone directly from the charger without heating or charging the battery.
-categories:
-  - System
-  - Utility
 license: GPL-3.0-only
 homepage: https://github.com/mhmithu/Smart-Bypass-Charging
-source: https://github.com/mhmithu/Smart-Bypass-Charging
-issues: https://github.com/mhmithu/Smart-Bypass-Charging/issues
-webui: true
