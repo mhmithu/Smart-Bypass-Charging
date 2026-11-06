@@ -1,0 +1,7 @@
+id=smart_bypass_charging
+name=Smart Bypass Charging
+version=v1.0.0
+versionCode=100
+author=mhmithu
+description=Stops charging at a custom limit (e.g., 90%) and enables Bypass Charging for gaming with Material 3 WebUI and Auto-Detection Engine. Supports Magisk & KernelSU.
+updateJson=https://raw.githubusercontent.com/mhmithu/Smart-Bypass-Charging/main/update.json

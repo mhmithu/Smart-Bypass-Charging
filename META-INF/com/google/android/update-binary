@@ -1,0 +1,6 @@
+#!/sbin/sh
+TMPDIR=/dev/tmp
+rm -rf $TMPDIR 2>/dev/null
+mkdir -p $TMPDIR
+unzip -o "$3" -d $TMPDIR >&2
+. $TMPDIR/customize.sh
