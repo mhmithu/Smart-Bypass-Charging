@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Bypass Charging</title>
     <style>
-        /* Android Material 3 - Light Mode (Default) */
+        /* Android Material 3 - Light Mode */
         :root {
             --bg: #f8f9ff;
             --card: #eef0f8;
@@ -15,14 +15,13 @@
             --primary-container: #d3e3fd;
             --on-primary-container: #041e49;
             --danger: #b3261e;
-            --danger-bg: #f9dedc;
             --text: #191c20;
             --text-sec: #44474e;
             --outline: #c4c6d0;
             --switch-off: #74777f;
         }
 
-        /* Android Material 3 - Dark Mode (Auto Detects System Theme) */
+        /* Android Material 3 - Dark Mode */
         @media (prefers-color-scheme: dark) {
             :root {
                 --bg: #111318;
@@ -33,7 +32,6 @@
                 --primary-container: #0842a0;
                 --on-primary-container: #d3e3fd;
                 --danger: #ffb4ab;
-                --danger-bg: #690005;
                 --text: #e2e2e9;
                 --text-sec: #8e9099;
                 --outline: #33353a;
@@ -48,40 +46,53 @@
             margin: 0;
             padding: 16px;
             user-select: none;
-            transition: background-color 0.3s, color 0.3s;
         }
 
-        .header { text-align: center; padding: 10px 4px 20px 4px; }
-        .header h2 { color: var(--text); margin: 0; font-size: 24px; font-weight: 500; }
-        .header p { color: var(--text-sec); margin: 4px 0 0; font-size: 14px; }
-        
-        /* Material 3 Tonal Cards */
+        .header { padding: 8px 4px 18px 4px; display: flex; justify-content: space-between; align-items: center; }
+        .header h2 { margin: 0; font-size: 22px; font-weight: 500; }
+        .header p { color: var(--text-sec); margin: 3px 0 0; font-size: 13px; }
+        .ver-badge { background: var(--primary-container); color: var(--on-primary-container); padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+
         .card {
             background-color: var(--card);
             border-radius: 20px;
-            padding: 18px;
+            padding: 16px;
             margin-bottom: 14px;
+        }
+
+        .section-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 12px;
         }
 
         .status-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             text-align: center;
-            gap: 10px;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .status-grid.two-col {
+            grid-template-columns: 1fr 1fr;
+            margin-bottom: 0;
         }
         .stat-box {
             background: var(--card-inner);
-            padding: 14px 8px;
-            border-radius: 16px;
+            padding: 12px 6px;
+            border-radius: 14px;
         }
         .stat-val {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
             color: var(--primary);
             margin-top: 4px;
         }
         .stat-label {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 500;
             color: var(--text-sec);
             letter-spacing: 0.5px;
@@ -94,135 +105,179 @@
             margin-bottom: 12px;
         }
         .row:last-child { margin-bottom: 0; }
-        .title { font-size: 16px; font-weight: 500; }
-        .desc { font-size: 13px; color: var(--text-sec); margin-top: 2px; padding-right: 10px; }
+        .title { font-size: 15px; font-weight: 500; }
+        .desc { font-size: 12px; color: var(--text-sec); margin-top: 2px; padding-right: 10px; }
+
+        /* Speed Preset Chips */
+        .chip-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .chip {
+            background: var(--card-inner);
+            color: var(--text);
+            border: 1px solid var(--outline);
+            padding: 10px 6px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .chip.active {
+            background: var(--primary-container);
+            color: var(--on-primary-container);
+            border-color: var(--primary);
+            font-weight: 600;
+        }
 
         /* Material 3 Switch */
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 52px;
-            height: 30px;
-            flex-shrink: 0;
-        }
+        .switch { position: relative; display: inline-block; width: 52px; height: 30px; flex-shrink: 0; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider {
             position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: var(--card-inner);
-            border: 2px solid var(--switch-off);
+            background-color: var(--card-inner); border: 2px solid var(--switch-off);
             transition: .25s; border-radius: 34px;
         }
         .slider:before {
-            position: absolute; content: "";
-            height: 16px; width: 16px;
-            left: 5px; bottom: 5px;
-            background-color: var(--switch-off);
+            position: absolute; content: ""; height: 16px; width: 16px;
+            left: 5px; bottom: 5px; background-color: var(--switch-off);
             transition: .25s; border-radius: 50%;
         }
-        input:checked + .slider {
-            background-color: var(--primary);
-            border-color: var(--primary);
-        }
+        input:checked + .slider { background-color: var(--primary); border-color: var(--primary); }
         input:checked + .slider:before {
-            transform: translateX(22px);
-            background-color: var(--on-primary);
-            height: 20px; width: 20px;
-            left: 3px; bottom: 3px;
+            transform: translateX(22px); background-color: var(--on-primary);
+            height: 20px; width: 20px; left: 3px; bottom: 3px;
         }
-        
-        /* Bypass Switch Special M3 Error Color */
-        input:checked + .slider.bypass-slider {
-            background-color: var(--danger);
-            border-color: var(--danger);
-        }
+        input:checked + .slider.bypass-slider { background-color: var(--danger); border-color: var(--danger); }
 
         /* Range Slider */
-        .range-container { margin-top: 16px; }
+        .range-container { margin-top: 14px; }
         input[type=range] {
-            width: 100%;
-            accent-color: var(--primary);
-            height: 6px;
-            background: var(--card-inner);
-            border-radius: 5px;
-            outline: none;
+            width: 100%; accent-color: var(--primary);
+            height: 6px; background: var(--card-inner); border-radius: 5px; outline: none;
         }
         .badge {
-            background: var(--primary-container);
-            color: var(--on-primary-container);
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 13px;
+            background: var(--primary-container); color: var(--on-primary-container);
+            padding: 4px 10px; border-radius: 10px; font-weight: 600; font-size: 12px;
         }
 
-        /* Material 3 Filled Button */
-        .btn {
+        /* Game Package Input */
+        textarea {
             width: 100%;
-            padding: 16px;
-            background: var(--primary);
-            color: var(--on-primary);
-            border: none;
-            border-radius: 100px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            margin-top: 6px;
+            box-sizing: border-box;
+            background: var(--card-inner);
+            color: var(--text);
+            border: 1px solid var(--outline);
+            border-radius: 12px;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            margin-top: 10px;
+            resize: vertical;
         }
-        .btn:active {
-            transform: scale(0.98);
-            opacity: 0.9;
+
+        .btn {
+            width: 100%; padding: 15px; background: var(--primary); color: var(--on-primary);
+            border: none; border-radius: 100px; font-size: 15px; font-weight: 600;
+            cursor: pointer; transition: 0.2s; margin-top: 4px;
         }
-        hr {
-            border: 0;
-            border-top: 1px solid var(--outline);
-            margin: 16px 0;
-            opacity: 0.5;
-        }
+        .btn:active { transform: scale(0.98); opacity: 0.9; }
+        hr { border: 0; border-top: 1px solid var(--outline); margin: 14px 0; opacity: 0.5; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h2>⚡ Smart Bypass Charging</h2>
-        <p>Battery Health & Gaming Power Controller</p>
+        <div>
+            <h2>Smart Bypass Charging</h2>
+            <p>Battery Health & Power Controller</p>
+        </div>
+        <span class="ver-badge">v1.1.0</span>
     </div>
 
-    <!-- Live Battery Status -->
-    <div class="card status-grid">
-        <div class="stat-box">
-            <div class="stat-label">LEVEL</div>
-            <div class="stat-val" id="bat_level">--%</div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-label">STATUS</div>
-            <div class="stat-val" id="bat_status" style="font-size: 14px; margin-top: 7px;">--</div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-label">TEMP</div>
-            <div class="stat-val" id="bat_temp">--°C</div>
-        </div>
-    </div>
-
-    <!-- Force Bypass Mode -->
+    <!-- Live Telemetry & Battery Health Dashboard -->
     <div class="card">
+        <div class="section-label">Live Telemetry & Health</div>
+        <div class="status-grid">
+            <div class="stat-box">
+                <div class="stat-label">LEVEL & STATUS</div>
+                <div class="stat-val" id="bat_level">--%</div>
+                <div class="stat-label" id="bat_status" style="margin-top:3px;">--</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">LIVE POWER</div>
+                <div class="stat-val" id="bat_watt">0.0 W</div>
+                <div class="stat-label" id="bat_curr" style="margin-top:3px;">0 mA</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">TEMP & VOLT</div>
+                <div class="stat-val" id="bat_temp">--°C</div>
+                <div class="stat-label" id="bat_volt" style="margin-top:3px;">-- V</div>
+            </div>
+        </div>
+        <div class="status-grid two-col">
+            <div class="stat-box">
+                <div class="stat-label">BATTERY HEALTH</div>
+                <div class="stat-val" id="bat_health">--%</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">CHARGE CYCLES</div>
+                <div class="stat-val" id="bat_cycles">--</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gaming Bypass Controls -->
+    <div class="card">
+        <div class="section-label">Gaming Bypass Controls</div>
         <div class="row">
             <div>
-                <div class="title" style="color: var(--danger);">🔥 Force Bypass Mode</div>
-                <div class="desc">Direct power from charger for gaming</div>
+                <div class="title" style="color: var(--danger);">Force Bypass Mode</div>
+                <div class="desc">Immediately pause charging & run on AC power</div>
             </div>
             <label class="switch">
                 <input type="checkbox" id="force_bypass" onchange="saveConfig()">
                 <span class="slider bypass-slider"></span>
             </label>
         </div>
-    </div>
-
-    <!-- Smart Charging Settings -->
-    <div class="card">
+        <hr>
         <div class="row">
             <div>
-                <div class="title">🛡️ Smart Charging</div>
+                <div class="title">Auto-Bypass in Games</div>
+                <div class="desc">Automatically activate bypass when a listed game is open</div>
+            </div>
+            <label class="switch">
+                <input type="checkbox" id="game_bypass" onchange="toggleGameBox(); saveConfig();">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div id="game_box" style="display: none;">
+            <div class="desc" style="margin-top: 8px;">Game Package Names (One per line):</div>
+            <textarea id="games_list" rows="4" placeholder="com.tencent.ig"></textarea>
+        </div>
+    </div>
+
+    <!-- Charging Speed / Wattage Controller -->
+    <div class="card">
+        <div class="section-label">Charging Speed Controller</div>
+        <div class="desc">Control charging current to reduce heat or charge overnight</div>
+        <div class="chip-group">
+            <div class="chip active" id="spd_0" onclick="setSpeed(0)">⚡ Fast (Max)</div>
+            <div class="chip" id="spd_2000000" onclick="setSpeed(2000000)">⚖️ Balanced (10W)</div>
+            <div class="chip" id="spd_1000000" onclick="setSpeed(1000000)">🌙 Cool Night (5W)</div>
+        </div>
+    </div>
+
+    <!-- Smart Charging Limits -->
+    <div class="card">
+        <div class="section-label">Smart Charging Limits</div>
+        <div class="row">
+            <div>
+                <div class="title">Smart Charging</div>
                 <div class="desc">Auto stop charging at custom limit</div>
             </div>
             <label class="switch">
@@ -230,32 +285,53 @@
                 <span class="slider"></span>
             </label>
         </div>
-        
         <hr>
-        
+        <div class="row">
+            <div>
+                <div class="title">Charge to 100% Once</div>
+                <div class="desc">Override limit to 100% until next unplug</div>
+            </div>
+            <label class="switch">
+                <input type="checkbox" id="charge_100_once" onchange="saveConfig()">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <hr>
         <div class="range-container">
             <div class="row" style="margin-bottom: 8px;">
                 <span style="font-size: 14px;">Stop Charging Limit</span>
-                <span class="badge"><span id="max_val">90</span>%</span>
+                <span class="badge"><span id="max_val">80</span>%</span>
             </div>
-            <input type="range" id="max_limit" min="60" max="100" value="90">
+            <input type="range" id="max_limit" min="60" max="100" value="80">
         </div>
 
         <div class="range-container">
             <div class="row" style="margin-bottom: 8px;">
                 <span style="font-size: 14px;">Resume Charging Limit</span>
-                <span class="badge"><span id="res_val">80</span>%</span>
+                <span class="badge"><span id="res_val">75</span>%</span>
             </div>
-            <input type="range" id="resume_limit" min="50" max="90" value="80">
+            <input type="range" id="resume_limit" min="50" max="95" value="75">
         </div>
     </div>
 
-    <!-- Notification Settings -->
+    <!-- Thermal & Notifications -->
     <div class="card">
+        <div class="section-label">Protection & Alerts</div>
         <div class="row">
             <div>
-                <div class="title">🔔 Smart Notifications</div>
-                <div class="desc">Alerts for plug/unplug, bypass & overheating</div>
+                <div class="title">Smart Thermal Auto-Pause</div>
+                <div class="desc">Auto pause charging at 42°C & resume at 38°C</div>
+            </div>
+            <label class="switch">
+                <input type="checkbox" id="thermal_enable" onchange="saveConfig()">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <hr>
+        <div class="row">
+            <div>
+                <div class="title">Smart Notifications</div>
+                <div class="desc">System alerts for plug/unplug, bypass & thermal states</div>
             </div>
             <label class="switch">
                 <input type="checkbox" id="notif_enable" onchange="saveConfig()">
@@ -264,14 +340,16 @@
         </div>
     </div>
 
-    <button class="btn" id="save_btn" onclick="saveConfig(true)">Save Settings</button>
+    <button class="btn" id="save_btn" onclick="saveConfig(true)">Save & Apply Settings</button>
 
     <script>
-        // Internal paths for module config and battery sysfs
-        const CONFIG_PATH = "/data/adb/modules/smart_bypass_charging/config.conf";
+        const MOD_DIR = "/data/adb/modules/smart_bypass_charging";
+        const CONFIG_PATH = `${MOD_DIR}/config.conf`;
+        const GAMES_PATH = `${MOD_DIR}/games.conf`;
         const BAT_PATH = "/sys/class/power_supply/battery";
 
-        // Wrapper function to execute root shell commands via KernelSU API
+        let currentSpeed = 0;
+
         function execShell(cmd) {
             return new Promise((resolve) => {
                 if (typeof ksu !== 'undefined') {
@@ -282,29 +360,72 @@
             });
         }
 
-        // Bind UI sliders to badge values
         const maxSlider = document.getElementById('max_limit');
         const resSlider = document.getElementById('resume_limit');
         maxSlider.oninput = () => document.getElementById('max_val').innerText = maxSlider.value;
         resSlider.oninput = () => document.getElementById('res_val').innerText = resSlider.value;
 
-        // Fetch live battery status from kernel
+        function toggleGameBox() {
+            const on = document.getElementById('game_bypass').checked;
+            document.getElementById('game_box').style.display = on ? 'block' : 'none';
+        }
+
+        function setSpeed(val) {
+            currentSpeed = val;
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            const activeChip = document.getElementById(`spd_${val}`);
+            if (activeChip) activeChip.classList.add('active');
+            saveConfig();
+        }
+
+        // Read all battery metrics in a single shell call for fast performance
         async function updateBatteryStatus() {
-            const level = await execShell(`cat ${BAT_PATH}/capacity`);
-            const status = await execShell(`cat ${BAT_PATH}/status`);
-            const tempRaw = await execShell(`cat ${BAT_PATH}/temp`);
-            
-            if(level) document.getElementById('bat_level').innerText = `${level}%`;
-            if(status) document.getElementById('bat_status').innerText = status;
-            if(tempRaw) {
+            const cmd = `
+                echo "$(cat ${BAT_PATH}/capacity 2>/dev/null)|$(cat ${BAT_PATH}/status 2>/dev/null)|$(cat ${BAT_PATH}/temp 2>/dev/null)|$(cat ${BAT_PATH}/current_now 2>/dev/null)|$(cat ${BAT_PATH}/voltage_now 2>/dev/null)|$(cat ${BAT_PATH}/cycle_count 2>/dev/null)|$(cat ${BAT_PATH}/charge_full 2>/dev/null)|$(cat ${BAT_PATH}/charge_full_design 2>/dev/null)"
+            `;
+            const raw = await execShell(cmd);
+            if (!raw) return;
+
+            const [level, status, tempRaw, currRaw, voltRaw, cycles, fullRaw, designRaw] = raw.split('|');
+
+            if (level) document.getElementById('bat_level').innerText = `${level}%`;
+            if (status) document.getElementById('bat_status').innerText = status;
+
+            if (tempRaw) {
                 const temp = (parseInt(tempRaw) / 10).toFixed(1);
                 const tempEl = document.getElementById('bat_temp');
                 tempEl.innerText = `${temp}°C`;
                 tempEl.style.color = temp >= 42 ? "var(--danger)" : "var(--primary)";
             }
+
+            // Calculate Voltage (V), Current (mA), and Power (W)
+            let voltV = 0;
+            if (voltRaw) {
+                const v = parseInt(voltRaw);
+                voltV = v > 100000 ? (v / 1000000) : (v / 1000);
+                document.getElementById('bat_volt').innerText = `${voltV.toFixed(2)} V`;
+            }
+
+            if (currRaw) {
+                const c = Math.abs(parseInt(currRaw) || 0);
+                const currMa = c > 15000 ? Math.round(c / 1000) : c;
+                const watts = ((currMa / 1000) * voltV).toFixed(1);
+                document.getElementById('bat_curr').innerText = `${currMa} mA`;
+                document.getElementById('bat_watt').innerText = `${watts} W`;
+            }
+
+            if (cycles) document.getElementById('bat_cycles').innerText = cycles;
+
+            if (fullRaw && designRaw) {
+                const full = parseInt(fullRaw);
+                const design = parseInt(designRaw);
+                if (full > 0 && design > 0) {
+                    const health = Math.min(100, Math.round((full / design) * 100));
+                    document.getElementById('bat_health').innerText = `${health}%`;
+                }
+            }
         }
 
-        // Load saved configuration on startup
         async function loadConfig() {
             const data = await execShell(`cat ${CONFIG_PATH}`);
             if (data) {
@@ -313,18 +434,36 @@
                     if (key === 'SMART_ENABLE') document.getElementById('smart_enable').checked = (val == '1');
                     if (key === 'FORCE_BYPASS') document.getElementById('force_bypass').checked = (val == '1');
                     if (key === 'NOTIF_ENABLE') document.getElementById('notif_enable').checked = (val == '1');
+                    if (key === 'THERMAL_ENABLE') document.getElementById('thermal_enable').checked = (val == '1');
+                    if (key === 'CHARGE_100_ONCE') document.getElementById('charge_100_once').checked = (val == '1');
+                    if (key === 'GAME_BYPASS') {
+                        document.getElementById('game_bypass').checked = (val == '1');
+                        toggleGameBox();
+                    }
+                    if (key === 'CHARGE_SPEED') {
+                        currentSpeed = parseInt(val) || 0;
+                        document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+                        const chip = document.getElementById(`spd_${currentSpeed}`);
+                        if (chip) chip.classList.add('active');
+                    }
                     if (key === 'MAX_LIMIT') { maxSlider.value = val; maxSlider.oninput(); }
                     if (key === 'RESUME_LIMIT') { resSlider.value = val; resSlider.oninput(); }
                 });
             }
+
+            const games = await execShell(`cat ${GAMES_PATH}`);
+            if (games) document.getElementById('games_list').value = games;
+
             updateBatteryStatus();
         }
 
-        // Save configuration to internal file
         async function saveConfig(showFeedback = false) {
             const smart = document.getElementById('smart_enable').checked ? 1 : 0;
             const bypass = document.getElementById('force_bypass').checked ? 1 : 0;
             const notif = document.getElementById('notif_enable').checked ? 1 : 0;
+            const thermal = document.getElementById('thermal_enable').checked ? 1 : 0;
+            const once100 = document.getElementById('charge_100_once').checked ? 1 : 0;
+            const gameBypass = document.getElementById('game_bypass').checked ? 1 : 0;
             const max = parseInt(maxSlider.value);
             const res = parseInt(resSlider.value);
 
@@ -333,13 +472,29 @@
                 return;
             }
 
-            const configContent = `SMART_ENABLE=${smart}\nMAX_LIMIT=${max}\nRESUME_LIMIT=${res}\nFORCE_BYPASS=${bypass}\nNOTIF_ENABLE=${notif}`;
+            const configContent = [
+                `SMART_ENABLE=${smart}`,
+                `MAX_LIMIT=${max}`,
+                `RESUME_LIMIT=${res}`,
+                `FORCE_BYPASS=${bypass}`,
+                `NOTIF_ENABLE=${notif}`,
+                `CHARGE_SPEED=${currentSpeed}`,
+                `THERMAL_ENABLE=${thermal}`,
+                `CHARGE_100_ONCE=${once100}`,
+                `GAME_BYPASS=${gameBypass}`
+            ].join('\n');
+
+            const gamesList = document.getElementById('games_list').value.trim();
+
             await execShell(`echo "${configContent}" > ${CONFIG_PATH}`);
+            if (gamesList) {
+                await execShell(`echo "${gamesList}" > ${GAMES_PATH}`);
+            }
 
             if (showFeedback) {
                 const btn = document.getElementById('save_btn');
                 const origText = btn.innerText;
-                btn.innerText = "✓ Settings Applied";
+                btn.innerText = "✓ Settings Saved & Applied";
                 btn.style.background = "var(--primary-container)";
                 btn.style.color = "var(--on-primary-container)";
                 setTimeout(() => {
@@ -348,13 +503,12 @@
                     btn.style.color = "var(--on-primary)";
                 }, 1500);
             }
-            setTimeout(updateBatteryStatus, 3000);
+            setTimeout(updateBatteryStatus, 2000);
         }
 
-        // Initialize UI and start polling interval
         window.onload = () => {
             loadConfig();
-            setInterval(updateBatteryStatus, 3000);
+            setInterval(updateBatteryStatus, 2500);
         };
     </script>
 </body>
