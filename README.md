@@ -1,50 +1,67 @@
 # ⚡ Smart Bypass Charging
 
-![Magisk](https://img.shields.io/badge/Magisk-20.4%2B-00B0FF?style=for-the-badge&logo=magisk&logoColor=white)
+![Version](https://img.shields.io/badge/Version-v1.1.0-blue?style=for-the-badge)
 ![KernelSU](https://img.shields.io/badge/KernelSU-Supported-black?style=for-the-badge&logo=android&logoColor=white)
-![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)
+![Magisk](https://img.shields.io/badge/Magisk-20.4%2B-00B0FF?style=for-the-badge&logo=magisk&logoColor=white)
+![License](https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge)
 
-**Smart Bypass Charging** is an advanced charging controller module for **KernelSU** and **Magisk**. It protects your battery health by stopping charging at a custom limit and provides a dedicated **Force Bypass Mode** for gamers to power the phone directly from the charger without heating or charging the battery.
+**Smart Bypass Charging** is an all-in-one battery health, wattage controller, and gaming bypass charging module for **KernelSU**, **APatch**, and **Magisk**. It protects your battery from heat and degradation by pausing charging at custom limits, regulating charging speed, and providing automatic **Bypass (Idle) Mode** during gaming.
 
 ---
 
 ## ✨ Key Features
 
-* **🧠 Universal Auto-Detection Engine:** Automatically probes, verifies, and caches the exact working kernel charging switch for your device (Supports GKI, Qualcomm, MediaTek, Google Tensor, Exynos, Xiaomi, Samsung, OnePlus/Oplus, Asus, etc.).
-* **🔥 Gaming Bypass Mode:** One-tap toggle to pause battery charging at any percentage and run the device directly on AC/USB power (Idle Mode), reducing heat and battery degradation during heavy gaming.
-* **🛡️ Smart Charging Limits:** Set custom **Stop Charging** (e.g., 90%) and **Resume Charging** (e.g., 80%) thresholds.
-* **🎨 Material Design 3 WebUI:** Built-in native Android 14/KernelSU styled graphical interface with automatic **Light & Dark Mode** support.
-* **🔔 Smart Notifications:** Real-time system notifications for Charger Connect/Disconnect, Limit Reached, Bypass Activation, and **Overheating Warnings (≥42°C)**.
-* **🧹 Clean Storage:** Zero clutter on your `/sdcard`. All configurations are stored securely inside the module's internal directory.
+* **📊 Live Power & Health Telemetry:** Real-time dashboard displaying live charging **Wattage (W)**, **Current (mA)**, **Voltage (V)**, **Temperature (°C)**, **Battery Health (%)**, and **Charge Cycle Count**.
+* **🔥 Force Bypass & 🎮 Auto-Bypass in Games:**
+  * **Force Bypass Mode:** One-tap toggle to pause battery charging at any level and power the phone directly from the charger (AC/Idle power).
+  * **Auto-Bypass in Games:** Automatically activates Bypass Mode when a configured game is launched in the foreground and resumes normal operation when closed.
+* **🎚️ Charging Speed / Wattage Controller:** Control charging current on the fly with 3 presets:
+  * **⚡ Fast (Max):** Unthrottled hardware fast charging.
+  * **⚖️ Balanced (~10W / 2000mA):** Moderate speed with reduced heat.
+  * **🌙 Cool Night (~5W / 1000mA):** Slow, cool overnight charging to maximize battery longevity.
+* **🛡️ Smart Charging Limits & 100% Override:**
+  * Set custom **Stop Charging** (e.g., 80%) and **Resume Charging** (e.g., 75%) thresholds.
+  * **🔋 Charge to 100% Once:** One-tap toggle to temporarily allow a full 100% charge until the next unplug.
+* **🌡️ Smart Thermal Auto-Pause:** Automatically pauses charging if battery temperature reaches **≥42°C** and safely resumes once it cools down to **≤38°C**.
+* **🧠 Universal Auto-Detection Engine:** Probes, verifies, and caches the exact working kernel charging switch for your device (Supports Android GKI, Qualcomm, MediaTek, Google Tensor, Exynos, Xiaomi, Samsung, OnePlus/Oplus, Asus, etc.).
+* **🎨 Native Material Design 3 WebUI:** Clean Android 14 / KernelSU styled interface with automatic **Light & Dark Mode** support.
+* **🔔 Smart System Notifications:** Real-time alerts for Charger Connect/Disconnect, Bypass Activation, Limit Reached, and Thermal Pause events.
+
+---
+
+## 🔒 Security & Transparency
+
+* **100% Auditable Shell & Web Code:** Built entirely with plain-text POSIX shell scripts (`customize.sh`, `service.sh`) and a static HTML/CSS/JS WebUI (`webroot/index.html`).
+* **Zero Binaries & Zero Network Calls:** Contains no prebuilt binaries/blobs and makes zero external network requests.
+* **Clean Storage:** No clutter on `/sdcard`. All configurations (`config.conf`, `games.conf`, `active_switch.conf`) are stored strictly inside `/data/adb/modules/smart_bypass_charging/`.
 
 ---
 
 ## 📱 How to Access Settings (WebUI)
 
 * **For KernelSU / APatch Users:**
-  1. Open the **KernelSU Manager** app and go to the **Modules** tab.
-  2. Tap on the **Smart Bypass Charging** card (or the Web/Globe icon) to open the Settings GUI directly.
+  1. Open the **KernelSU / APatch Manager** app and go to the **Modules** tab.
+  2. Tap on the **Smart Bypass Charging** card to launch the built-in Material 3 WebUI.
 
 * **For Magisk Users:**
-  1. Download and install the lightweight **[KSUWebUI APK](https://github.com/5ec1cff/KsuWebUIStandalone/releases)** from GitHub.
-  2. Open the **KSUWebUI** app, grant root permission, and select **Smart Bypass Charging** to configure your settings.
+  1. Download and install the standalone **[KSUWebUI APK](https://github.com/5ec1cff/KsuWebUIStandalone/releases)**.
+  2. Open **KSUWebUI**, grant root access, and select **Smart Bypass Charging**.
 
 ---
 
 ## 📦 Installation
 
-1. Download the latest release `.zip` from the **[Releases](../../releases)** page.
-2. Open **Magisk**, **KernelSU**, or **APatch** Manager.
-3. Flash the zip file in the **Modules** section.
-4. **Reboot** your device.
+1. Download the latest `.zip` package from the **[Releases](../../releases)** page.
+2. Flash the zip in **KernelSU**, **APatch**, or **Magisk** Manager.
+3. **Reboot** your device.
 
 ---
 
 ## 🤝 Credits & Inspiration
 
-* Inspired by the switch database of **ACC (Advanced Charging Controller)**.
-* Designed for the Android Root & Modding Community.
+* Inspired by the universal switch mechanisms of **ACC (Advanced Charging Controller)**.
+* Developed by **[mhmithu](https://github.com/mhmithu)**.
 
 ## 📄 License
 
-This project is licensed under the **GNU General Public License v3.0 (GPLv3)** - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **GNU General Public License v3.0 (GPL-3.0-only)** — see the [LICENSE](LICENSE) file for details.
