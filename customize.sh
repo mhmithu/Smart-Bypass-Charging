@@ -1,7 +1,7 @@
 SKIPUNZIP=0
 
 ui_print "=================================="
-ui_print "   Smart Bypass Charging v1.1.0   "
+ui_print "   Smart Bypass Charging v1.1.1   "
 ui_print "       Magisk & KernelSU          "
 ui_print "=================================="
 
@@ -10,8 +10,8 @@ ui_print "- Setting up configuration files..."
 # Create default configuration file
 cat <<EOF > "$MODPATH/config.conf"
 SMART_ENABLE=1
-MAX_LIMIT=90
-RESUME_LIMIT=80
+MAX_LIMIT=80
+RESUME_LIMIT=75
 FORCE_BYPASS=0
 NOTIF_ENABLE=1
 CHARGE_SPEED=0

@@ -1,11 +1,22 @@
 # ⚡ Smart Bypass Charging
 
-![Version](https://img.shields.io/badge/Version-v1.1.0-blue?style=for-the-badge)
+![Version](https://img.shields.io/badge/Version-v1.1.1-blue?style=for-the-badge)
 ![KernelSU](https://img.shields.io/badge/KernelSU-Supported-black?style=for-the-badge&logo=android&logoColor=white)
 ![Magisk](https://img.shields.io/badge/Magisk-20.4%2B-00B0FF?style=for-the-badge&logo=magisk&logoColor=white)
 ![License](https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge)
 
 **Smart Bypass Charging** is an all-in-one battery health, wattage controller, and gaming bypass charging module for **KernelSU**, **APatch**, and **Magisk**. It protects your battery from heat and degradation by pausing charging at custom limits, regulating charging speed, and providing automatic **Bypass (Idle) Mode** during gaming.
+
+---
+
+## ⚠️ Risk Notice & Disclaimer
+
+> **IMPORTANT — PLEASE READ BEFORE USE:**
+> This module functions by directly writing to kernel power supply and battery charging control `sysfs` / `procfs` nodes (such as `/sys/class/power_supply/battery/*`).
+> - Kernel charging implementations vary widely across OEMs, PMICs, and custom kernels. Writing to charging control nodes may cause unexpected charging behavior, inaccurate battery percentage reporting, failure to resume charging until reboot, or PMIC/charger resets on certain devices.
+> - Always monitor your device temperature and charging state during initial use.
+> - If charging does not resume after unplugging, disable or remove the module and reboot your device to restore default kernel states.
+> - You are using this module at your own risk. The developer is not responsible for any hardware, battery, or device issues resulting from its use.
 
 ---
 
@@ -23,7 +34,7 @@
   * Set custom **Stop Charging** (e.g., 80%) and **Resume Charging** (e.g., 75%) thresholds.
   * **🔋 Charge to 100% Once:** One-tap toggle to temporarily allow a full 100% charge until the next unplug.
 * **🌡️ Smart Thermal Auto-Pause:** Automatically pauses charging if battery temperature reaches **≥42°C** and safely resumes once it cools down to **≤38°C**.
-* **🧠 Universal Auto-Detection Engine:** Probes, verifies, and caches the exact working kernel charging switch for your device (Supports Android GKI, Qualcomm, MediaTek, Google Tensor, Exynos, Xiaomi, Samsung, OnePlus/Oplus, Asus, etc.).
+* **🧠 Universal Auto-Detection Engine:** Probes, verifies, and caches the working kernel charging switch for your device (and caches failure on unsupported kernels to prevent continuous sysfs polling).
 * **🎨 Native Material Design 3 WebUI:** Clean Android 14 / KernelSU styled interface with automatic **Light & Dark Mode** support.
 * **🔔 Smart System Notifications:** Real-time alerts for Charger Connect/Disconnect, Bypass Activation, Limit Reached, and Thermal Pause events.
 

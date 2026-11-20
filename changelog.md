@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.1
+- **Fixed (Installer):** Replaced the custom 6-line `update-binary` with the official standard Magisk `util_functions.sh` installer for full Magisk & KernelSU compatibility.
+- **Fixed (Bypass Detection):** Corrected current threshold to `50000 uA` (`50mA`), removed `input_suspend`, and explicitly rejected `Discharging` status so battery discharge is never misidentified as valid bypass/idle mode.
+- **Fixed (Switch Probing):** Cached probe failure (`NONE` in `active_switch.conf`) when no compatible kernel switch is found, preventing continuous sysfs re-probing every 2 seconds on unsupported devices.
+- **Docs:** Added a clear **Risk Notice & Disclaimer** in `README.md` regarding writing directly to kernel charging control `sysfs` nodes.
+
 ## v1.1.0
 - **Fixed:** Resolved 14W (3A) fast charging ceiling cap issue on first charger plug-in.
 - **New:** Added **Charging Speed Controller** (Fast Max, Balanced 10W, and Cool Night 5W modes).
