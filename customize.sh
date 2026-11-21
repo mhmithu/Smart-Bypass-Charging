@@ -1,7 +1,7 @@
 SKIPUNZIP=0
 
 ui_print "=================================="
-ui_print "   Smart Bypass Charging v1.1.1   "
+ui_print "   Smart Bypass Charging v1.1.2   "
 ui_print "       Magisk & KernelSU          "
 ui_print "=================================="
 

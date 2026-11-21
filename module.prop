@@ -1,7 +1,7 @@
 id=smart_bypass_charging
 name=Smart Bypass Charging
-version=v1.1.1
-versionCode=111
+version=v1.1.2
+versionCode=112
 author=mhmithu
 description=Advanced Smart Charging, Wattage Controller & Gaming Bypass Charging with Material 3 WebUI and Auto-Detection Engine.
 updateJson=https://raw.githubusercontent.com/mhmithu/Smart-Bypass-Charging/main/update.json

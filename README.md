@@ -1,6 +1,6 @@
 # ⚡ Smart Bypass Charging
 
-![Version](https://img.shields.io/badge/Version-v1.1.1-blue?style=for-the-badge)
+![Version](https://img.shields.io/badge/Version-v1.1.2-blue?style=for-the-badge)
 ![KernelSU](https://img.shields.io/badge/KernelSU-Supported-black?style=for-the-badge&logo=android&logoColor=white)
 ![Magisk](https://img.shields.io/badge/Magisk-20.4%2B-00B0FF?style=for-the-badge&logo=magisk&logoColor=white)
 ![License](https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge)
